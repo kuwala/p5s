@@ -2,6 +2,7 @@ function Snake() {
   // looks like I am going to need a State Machine soon!
   this.gotPoint = 0;
   this.isDead = false;
+  this.isDrawing = true;
   var j = 70;
   this.tailColor = color(random(j * 3),random(j * 3),random(j * 3));
   this.tailTrailCell = {t:0,c:this.tailColor}
@@ -46,12 +47,19 @@ function Snake() {
 
 
     grid.setCell(tail.x, tail.y, 0);
-    grid.setCellColor(tail.x, tail.y, this.tailTrailCell.c);
+    if (this.isDrawing) {
+      grid.setCellColor(tail.x, tail.y, this.tailTrailCell.c);
+    }
+    // grid.setCellColor(tail.x, tail.y, this.tailTrailCell.c);
 
     // push new cell on the array
     // last element is always the head
     this.cells.push(newPos);
     grid.setCell(newPos.x, newPos.y, 1);
+  }
+
+  this.toggleDraw = function() {
+    this.isDrawing = ! this.isDrawing;
   }
 
   this.update = function(grid) {
@@ -78,6 +86,8 @@ function Snake() {
       var extraTail = this.cells[0];
       this.cells.unshift(extraTail);
       this.tailTrailCell.c = nextSpot.c;
+      //clear grid spot
+        grid.setCellColor(newPos.x, newPos.y, color(0));
       grid.moreRandFood();
       okayToMove = true;
     } else if (nextSpot.t  === 1) {

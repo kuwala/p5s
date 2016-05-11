@@ -1,11 +1,12 @@
 function SnakeGame() {
   this.score = 0;
-  this.scoreX = 10;
-  this.scoreY = 10;
+  this.scoreX = 40;
+  this.scoreY = 40;
   this.scoreColor =  color(218, 212, 94);
 
   this.drawScore = function () {
     fill(this.scoreColor);
+    textSize(30);
     text(this.score, this.scoreX, this.scoreY );
   }
   this.reset = function () {

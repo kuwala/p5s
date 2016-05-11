@@ -69,8 +69,6 @@ function Grid() {
     }
   }
 
-  this.setCell(10,20,2);
-
 
   this.draw = function () {
     for(var i = 0; i < this.rows; i ++) {
@@ -81,16 +79,23 @@ function Grid() {
         if (col===0) {
           fill(cCell.c);
           // fill(color(0));
+          rect(this.cellSize * j, this.cellSize * i, this.cellSize, this.cellSize);
         } else if (col===1) {
           fill(color(255));
           // fill(cCel.c);
+          rect(this.cellSize * j, this.cellSize * i, this.cellSize, this.cellSize);
         } else if (col===2) {
-          // fill(color(127));
+          fill(color(0));
+          rect(this.cellSize * j, this.cellSize * i, this.cellSize, this.cellSize);
           fill(cCell.c);
+          // ellipseMode(CORNER);
+          var x = this.cellSize * j + this.cellSize / 3*1.5;
+          var y = this.cellSize * i + this.cellSize / 3*1.5;
+          var size = this.cellSize / 1.5;
+          ellipse(x,y,size,size);
         }
         // strokeWeight(2);
         // stroke(color(20,20,20));
-        rect(this.cellSize * j, this.cellSize * i, this.cellSize, this.cellSize);
       }
     }
 
