@@ -1,7 +1,8 @@
 var grid;
 var snake;
 function setup() {
-  createCanvas(512,512);
+  cnvs = createCanvas(512,512);
+  cnvs.parent("p5Canvas");
   grid = new Grid();
   snake = new Snake();
   game = new SnakeGame();
