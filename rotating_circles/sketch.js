@@ -1,3 +1,6 @@
+// This is based on artwork by Karel Martens
+// http://lasociale.us/karel
+
 function setup() {
   cnvs = createCanvas(900, 500);
   cnvs.parent("p5canvas");
