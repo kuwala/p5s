@@ -1,12 +1,12 @@
 function Grid() {
-  this.setCellColor = function(j, i, col) {
-    this.cells[j + i * this.cols].c = col;
+  this.setCellColor = function(x, y, col) {
+    this.cells[x][y].c = col;
   }
-  this.setCell = function(j, i, type) {
-    this.cells[j + i * this.cols].t = type;
+  this.setCell = function(x, y, type) {
+    this.cells[x][y].t = type;
   }
   this.lookAtCell = function (x,y) {
-    return this.cells[x + y*this.rows];
+    return this.cells[x][y];
   }
   this.moreRandFood = function () {
     // create a food cell at random spot
@@ -30,17 +30,16 @@ function Grid() {
     this.setCellColor(x,y,col);
   }
   this.reset = function () {
-    this.cells = [];
-    // cells 0 = empty, 1 = snake, 2 = food
-    for(var i = 0; i < this.rows; i ++) {
-      for (var j = 0; j < this.cols; j++) {
-        // this.cells[j + i * this.cols] = color(0,0,0);
-        // this.cells[j + i * this.cols] = color(random(j * 3),random(j * 3),random(j * 3));
-        // var col = color(random(j * 3),random(j * 3),random(j * 3));
+    this.cells = new Array(this.cols)
+    for (var i = 0; i < this.cells.length; i++) {
+      this.cells[i] = new Array(this.rows)
+      for (var j = 0; j < this.cells[i].length; j ++) {
+        // cells 0 = empty, 1 = snake, 2 = food
         var col = color(0);
-        this.cells[j + i * this.cols] = {t:0,c:col};
+        this.cells[i][j] = {t:0,c:col};
       }
     }
+    // cells 0 = empty, 1 = snake, 2 = food
     for (var i = 0; i < this.foodCount; i++) {
       this.moreRandFood();
     }
@@ -48,7 +47,7 @@ function Grid() {
   this.x = 0;
   this.y = 0;
   this.cellSize = 16;
-  this.cols = 32;
+  this.cols = 48;
   this.rows = 32;
   this.foodCount = 20;
   // cells 0 = empty, 1 = snake, 2 = food
@@ -71,26 +70,26 @@ function Grid() {
 
 
   this.draw = function () {
-    for(var i = 0; i < this.rows; i ++) {
-      for (var j = 0; j < this.cols; j++) {
+    for(var i = 0; i < this.cells.length; i ++) {
+      for (var j = 0; j < this.cells[i].length; j++) {
         // Get the color of the cell
-        var cCell = this.cells[j+i*this.cols];
-        var col = this.cells[j+i*this.cols].t;
+        var cCell = this.cells[i][j];
+        var col = this.cells[i][j].t;
         if (col===0) {
           fill(cCell.c);
           // fill(color(0));
-          rect(this.cellSize * j, this.cellSize * i, this.cellSize, this.cellSize);
+          rect(this.cellSize * i, this.cellSize * j, this.cellSize, this.cellSize);
         } else if (col===1) {
           fill(color(255));
           // fill(cCel.c);
-          rect(this.cellSize * j, this.cellSize * i, this.cellSize, this.cellSize);
+          rect(this.cellSize * i, this.cellSize * j, this.cellSize, this.cellSize);
         } else if (col===2) {
           fill(color(0));
-          rect(this.cellSize * j, this.cellSize * i, this.cellSize, this.cellSize);
+          rect(this.cellSize * i, this.cellSize * j, this.cellSize, this.cellSize);
           fill(cCell.c);
           // ellipseMode(CORNER);
-          var x = this.cellSize * j + this.cellSize / 3*1.5;
-          var y = this.cellSize * i + this.cellSize / 3*1.5;
+          var x = this.cellSize * i + this.cellSize / 3*1.5;
+          var y = this.cellSize * j + this.cellSize / 3*1.5;
           var size = this.cellSize / 1.5;
           ellipse(x,y,size,size);
         }
