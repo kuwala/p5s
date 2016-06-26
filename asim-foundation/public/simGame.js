@@ -9,7 +9,7 @@ function SimGame() {
   this.grid = null
 
   this.update = function () {
-    console.log("updating ..");
+    // console.log("updating ..");
     switch (this.state) {
       case "loading":
         this.loading()
@@ -29,16 +29,19 @@ function SimGame() {
     // show loading message
     // wait for loadFinished message from server
   }
+  this.paused = function () {
+    // show paused screen maybe?
+  }
   this.playing = function () {
     // update all the game objects
     // consume input
     background(127)
-    console.log("playing ...");
+    // console.log("playing ...");
     for (var i = 0; i < this.objects.length; i++) {
-      console.log(this.objects.length);
+      // console.log(this.objects.length);
       this.objects[i].update()
     }
-    this.snake.update(this.grid)
+    // this.snake.update(this.grid)
 
   }
   this.setup = function () {
@@ -50,16 +53,15 @@ function SimGame() {
     this.grid = new Grid()
     this.objects.push(this.grid)
     this.snake = new Snake()
+    // give snake a refence to grid
     this.snake.setGrid(this.grid)
-    // dont push snake as its update
-    // function needs a reference to grid
-    // this.objects.push(this.snake)
+    this.objects.push(this.snake)
 
     // for sending input
     this.playerControlled = this.snake
 
     //this.rules = SnakeGame()
-    console.log("setup called");
+    // console.log("setup called");
 
   }
   // something like this here
@@ -82,6 +84,13 @@ function SimGame() {
         break;
       default:
         console.log("Not a valid simGame state");
+    }
+  }
+  this.togglePlay = function () {
+    if (this.state == "playing") {
+      this.state = "paused"
+    } else if (this.state == "paused") {
+      this.state = "playing"
     }
   }
 

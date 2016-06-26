@@ -49,23 +49,23 @@ function Snake() {
     var tail = this.cells.shift();
 
 
-    self.grid.setCell(tail.x, tail.y, 0);
+    this.grid.setCell(tail.x, tail.y, 0);
     if (this.isDrawing) {
-      self.grid.setCellColor(tail.x, tail.y, this.tailTrailCell.c);
+      this.grid.setCellColor(tail.x, tail.y, this.tailTrailCell.c);
     }
     // grid.setCellColor(tail.x, tail.y, this.tailTrailCell.c);
 
     // push new cell on the array
     // last element is always the head
     this.cells.push(newPos);
-    self.grid.setCell(newPos.x, newPos.y, 1);
+    this.grid.setCell(newPos.x, newPos.y, 1);
   }
 
   this.toggleDraw = function() {
     this.isDrawing = ! this.isDrawing;
   }
 
-  this.update = function(grid) {
+  this.update = function() {
     // check next spot
     var nextSpot;
     var okayToMove = false;
@@ -74,8 +74,8 @@ function Snake() {
     var newY = this.cells[this.cells.length-1].y + this.dirY;
     var newPos = {x:newX, y:newY};
     // Check and adjust for outer bounds
-    self.grid.checkEdges(newPos);
-    var nextSpot = self.grid.lookAtCell(newPos.x,newPos.y);
+    this.grid.checkEdges(newPos);
+    var nextSpot = this.grid.lookAtCell(newPos.x,newPos.y);
 
     this.isDead = false;
 
@@ -90,13 +90,13 @@ function Snake() {
       this.cells.unshift(extraTail);
       this.tailTrailCell.c = nextSpot.c;
       //clear grid spot
-        self.grid.setCellColor(newPos.x, newPos.y, color(0));
-      self.grid.moreRandFood();
+        this.grid.setCellColor(newPos.x, newPos.y, color(0));
+      this.grid.moreRandFood();
       okayToMove = true;
     } else if (nextSpot.t  === 1) {
       // snake at spot DIE!
       this.isDead = true;
-      self.grid.reset();
+      this.grid.reset();
       this.reset();
       okayToMove = false;
     } else {
@@ -106,7 +106,7 @@ function Snake() {
 
     //move
     if (okayToMove) {
-      this.move(grid, newPos);
+      this.move(this.grid, newPos);
     }
 
     //grow and shit

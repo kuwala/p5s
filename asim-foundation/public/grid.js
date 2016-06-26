@@ -56,15 +56,15 @@ function Grid() {
   this.checkEdges = function (cell) {
     // check cell being outside of bounds
     // and modifiy cell to fit within
-    if (cell.y > grid.rows - 1) {
+    if (cell.y > this.rows - 1) {
       cell.y = 0;
     } else if (cell.y < 0) {
-      cell.y = grid.rows - 1;
+      cell.y = this.rows - 1;
     }
-    if (cell.x > grid.cols - 1) {
+    if (cell.x > this.cols - 1) {
       cell.x = 0;
     } else if (cell.x < 0) {
-      cell.x = grid.cols - 1;
+      cell.x = this.cols - 1;
     }
   }
 
