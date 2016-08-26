@@ -9,10 +9,12 @@ function setup() {
   bgColor = color(0)
   fgColor = color(0)
   colPal = new ColPal()
+  splash = new Splash()
 }
 
 function draw() {
-  background(fgColor)
+  background(bgColor)
+  splash.update()
 
 }
 function bg1() {
@@ -22,6 +24,8 @@ function keyPressed(key) {
   if (keyCode == 81) {
     fgColor = colPal.colors[0]
   } else if (keyCode == 87) {
+    // Letters
+    // q (87) - p (80)
     fgColor = colPal.colors[1]
   } else if (keyCode == 69) {
     fgColor = colPal.colors[2]
@@ -40,6 +44,8 @@ function keyPressed(key) {
   } else if (keyCode == 80) {
     fgColor = colPal.colors[9]
   } else if (keyCode == 49) {
+    // Numbers
+    // 1 (49) - 5 (54)
     fgColor = colPal.colors[10]
   } else if (keyCode == 50) {
     fgColor = colPal.colors[11]
@@ -51,6 +57,12 @@ function keyPressed(key) {
     fgColor = colPal.colors[14]
   } else if (keyCode == 54) {
     fgColor = colPal.colors[15]
+  } else if (keyCode == 65) {
+    // a - s
+    fgColor = colPal.colors[13]
+  } else if (keyCode == 83) {
+    fgColor = colPal.colors[15]
   }
+  splash.reset(fgColor)
   console.log(keyCode);
 }

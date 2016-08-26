@@ -1,6 +1,4 @@
 // var grid;
-var snake;
-var simGame;
 function setup() {
   cnvs = createCanvas(768,512);
   cnvs.parent("p5Canvas");
@@ -9,6 +7,7 @@ function setup() {
   // game = new SnakeGame();
   simGame = new SimGame();
   simGame.setup()
+  eventManager = simGame.eventManager
 
   // for input
   snake = simGame.snake
@@ -24,12 +23,4 @@ function draw() {
 function receiveData(data) {
   // game.setHighScore(data.highscore)
   console.log("recieved data");
-}
-function keyPressed(key) {
-  var newKey = {type:"keyboardEvent", code:keyCode, pressType:"down"}
-  keyInputs.add(newKey)
-
-  if (keyCode == 32) {
-    keyInputs.log()
-  }
 }

@@ -1,0 +1,11 @@
+div.center {
+  width: 1360;
+  margin-left: auto;
+  display: block;
+  margin-right: auto;
+}
+
+body {
+  margin: 0px;
+  overflow:hidden;
+}

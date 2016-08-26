@@ -7,6 +7,8 @@ function SimGame() {
   this.state = "loading"
   this.objects = []
   this.grid = null
+  this.eventManager = new EventManager()
+  this.eventManager.addListener(this)
 
   this.update = function () {
     // console.log("updating ..");
@@ -37,11 +39,14 @@ function SimGame() {
     // consume input
     background(127)
     // console.log("playing ...");
-    for (var i = 0; i < this.objects.length; i++) {
-      // console.log(this.objects.length);
-      this.objects[i].update()
-    }
+    // for (var i = 0; i < this.objects.length; i++) {
+    //   // console.log(this.objects.length);
+    //   this.objects[i].update()
+    // }
     // this.snake.update(this.grid)
+
+    // Send an update event to all the listeners
+    this.eventManager.post(new UpdateEvent())
 
   }
   this.setup = function () {
@@ -51,8 +56,10 @@ function SimGame() {
     // Board
     // objects
     this.grid = new Grid()
+    this.eventManager.addListener(this.grid)
     this.objects.push(this.grid)
     this.snake = new Snake()
+    this.eventManager.addListener(this.snake)
     // give snake a refence to grid
     this.snake.setGrid(this.grid)
     this.objects.push(this.snake)
@@ -64,13 +71,6 @@ function SimGame() {
     // console.log("setup called");
 
   }
-  // something like this here
-  this.notify = function (event) {
-    if (event.type == "KeyboardInput") {
-      this.playerControlled.notify(event)
-    }
-  }
-
   this.addObjectTolist = function (obj) {
     this.objects.push(obj)
   }
@@ -91,6 +91,13 @@ function SimGame() {
       this.state = "paused"
     } else if (this.state == "paused") {
       this.state = "playing"
+    }
+  }
+  this.notify = function (event) {
+    if (event.type == "KeyboardEvent") {
+      if (event.code == 16) {
+        this.togglePlay()
+      }
     }
   }
 

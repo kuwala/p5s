@@ -103,4 +103,9 @@ function Grid() {
     }
 
   }
+  this.notify = function (event) {
+    if (event.type == "UpdateEvent") {
+      this.update()
+    }
+  }
 }

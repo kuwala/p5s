@@ -110,7 +110,49 @@ function Snake() {
     }
 
     //grow and shit
+    // ???
 
   } // end of - this.update()
+
+    this.digestKey = function (keyCode) {
+      var dir = this.dir
+      if (keyCode === LEFT_ARROW) {
+      if (dir !== 4) {
+        this.setDir(2);
+        newKey = LEFT_ARROW
+        // console.log("Left");
+      }
+    } else if (keyCode === RIGHT_ARROW) {
+      if (dir !== 2) {
+        this.setDir(4);
+        newKey = RIGHT_ARROW
+        // console.log("Right");
+      }
+    } else if (keyCode === DOWN_ARROW) {
+      if (dir !== 1) {
+        this.setDir(3);
+        newKey = DOWN_ARROW
+        // console.log("Down");
+      }
+    } else if (keyCode === UP_ARROW) {
+      if (dir !== 3) {
+        this.setDir(1);
+        newKey = UP_ARROW
+        // console.log("Up");
+      }
+    } else if (keyCode === 32) {
+      // Toggle Tail Drawing
+      this.toggleDraw()
+    }
+  }// end of digestKey
+
+  this.notify = function (event) {
+    if (event.type == "UpdateEvent") {
+      this.update()
+    } else if (event.type == "KeyboardEvent") {
+
+      this.digestKey(event.code)
+    }
+  }
 
 }
