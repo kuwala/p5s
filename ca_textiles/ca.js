@@ -1,26 +1,28 @@
 function CA_Life() {
-  this.cols = 48;
-  this.rows = 32;
+  this.cols = 100;
+  this.rows = 100;
   this.cellW = 10;
   this.cellH = 10;
   this.gen = 0; // Generations
   this.pause = 0; // pause update if = 1;
-
-  this.cells = new Array(this.cols); // x
-
-  this.activeCells = this.cells;
-  for (var i = 0; i < this.cells.length; i++) {
+  // cell array pointers
+  this.cellsA = new Array(this.cols); // x
+  this.cellsB = new Array(this.cols); // x
+  // read cells from activeCells
+  // and write to bufferCells
+  // then switch pointers
+  this.activeCells = this.cellsA;
+  this.bufferCells = this.cellsB;
+  this.surface = null;
+  for (var i = 0; i < this.cellsA.length; i++) {
     var column = new Array(this.rows); // y
     // init cells as random dots
     for (var j = 0; j < column.length; j++) {
-      var state = Math.floor(random(2));
-
-      var x = i * this.cellW;
-      var y = j * this.cellH;
-      column[j] = new Cell(x, y, this.cellW, state);
+      column[j] = Math.floor(random(2));
     }
     // Assing the columns to the cells
-    this.cells[i] = column;
+    this.cellsA[i] = column;
+    this.cellsB[i] = new Array(this.rows);
   }
 
 
@@ -41,24 +43,30 @@ function CA_Life() {
     // Modulo the result just incase mouseX/Y is out of the grid
     var cellX = Math.floor(pixelX / this.cellW) % this.cols;
     var cellY = Math.floor(pixelY / this.cellH) % this.rows;
-    this.activeCells[cellX][cellY].setState(1);
+    this.activeCells[cellX][cellY] = 1;
   }
   this.update = function () {
     // Generate new Cells
     if (this.pause == 0) {
       this.generate();
     }
-    this.drawCells();
+    if (this.surface) {
+      this.drawCellsOnto(this.surface);
+    } else {
+      this.drawCells();
+    }
 
+  }
+  this.setSurface = function (surf) {
+    this.surface = surf
   }
   this.generate = function () {
     // for each cell check the rules
-    for (var i = 0; i < this.cells.length; i++) {
-      // for each [i] column
-      for (var j = 0; j < this.cells[i].length; j++) {
+    for (var i = 0; i < this.activeCells.length; i++) {
+      var column = this.activeCells[i];
+      for (var j = 0; j < column.length; j++) {
         // check randomizeRules
-        // this.bufferCells[i][j]. = this.rules(i,j);
-        this.cells[i][j].futureState( this.rules(i,j) );
+        this.bufferCells[i][j] = this.rules(i,j);
         //this.bufferCells[i][j] = 1;
         // this.cells[i][j] = this.rules(i,j);
 
@@ -66,11 +74,9 @@ function CA_Life() {
       }
     }
      // Swap active cells with buffer cells;
-     for (var i = 0; i < this.cells.length; i++) {
-       for (var j = 0; j < this.cells[i].length; j++) {
-         this.cells[i][j].progressState();
-       }
-     }
+     var placeHolder = this.activeCells;
+     this.activeCells = this.bufferCells;
+     this.bufferCells = placeHolder;
   }
   this.setCells = function (destCells, targetCells) {
     // used to reassing newCells to cells
@@ -96,25 +102,25 @@ function CA_Life() {
     if (y==this.rows-1) { bot = 0; } else { bot = y + 1;}
 
     // Top
-    if(this.activeCells[left][top].state == 1) { neighbors += 1}
-    if(this.activeCells[x][top].state == 1) { neighbors += 1}
-    if(this.activeCells[right][top].state == 1) { neighbors += 1}
+    if(this.activeCells[left][top] == 1) { neighbors += 1}
+    if(this.activeCells[x][top] == 1) { neighbors += 1}
+    if(this.activeCells[right][top] == 1) { neighbors += 1}
 
     // Sides
-    if(this.activeCells[left][y].state == 1) { neighbors += 1}
-    if(this.activeCells[right][y].state == 1) { neighbors += 1}
+    if(this.activeCells[left][y] == 1) { neighbors += 1}
+    if(this.activeCells[right][y] == 1) { neighbors += 1}
 
     // Bottom
-    if(this.activeCells[left][bot].state == 1) { neighbors += 1}
-    if(this.activeCells[x][bot].state == 1) { neighbors += 1}
-    if(this.activeCells[right][bot].state == 1) { neighbors += 1}
+    if(this.activeCells[left][bot] == 1) { neighbors += 1}
+    if(this.activeCells[x][bot] == 1) { neighbors += 1}
+    if(this.activeCells[right][bot] == 1) { neighbors += 1}
 
     return neighbors;
   }
   this.rules = function (x,y) {
     // check the neighborhood of 9 cells around x,y
     var neighbors = this.countNeighbors(x,y);
-    var cellState = this.activeCells[x][y].state; // 0 dead, 1 alive
+    var cellState = this.activeCells[x][y]; // 0 dead, 1 alive
 
     if (neighbors > 3 || neighbors < 2) {
       //Death overpopulation
@@ -130,6 +136,27 @@ function CA_Life() {
     // console.log(cellStatus);
     return cellState;
   }
+  this.drawCellsOnto = function (surface) {
+    // erease background
+    surface.background(220);
+    // Draw cells on column at a time
+    surface.noStroke();
+    for (var i = 0; i < this.activeCells.length; i++) {
+      var column = this.activeCells[i];
+      for (var j = 0; j < column.length; j++) {
+        if (column[j] == 1) {
+          surface.stroke(2);
+          surface.fill(0);
+        } else {
+          surface.stroke(2);
+          surface.fill(255);
+        }
+        var x = i * this.cellW;
+        var y = j * this.cellH;
+        surface.rect(x,y,this.cellW,this.cellH);
+      }
+    }
+  }
   this.drawCells = function () {
     // erease background
     background(220);
@@ -138,15 +165,18 @@ function CA_Life() {
     for (var i = 0; i < this.activeCells.length; i++) {
       var column = this.activeCells[i];
       for (var j = 0; j < column.length; j++) {
-        // if (column[j].previousState == 1) {
-        //   fill(255);
-        // } else {
-        //   fill(0);
-        // }
-        // var x = i * this.cellW;
-        // var y = j * this.cellH;
-        // rect(x,y,this.cellW,this.cellH);
-        column[j].display();
+        if (column[j] == 1) {
+          // fill(255);
+          stroke(2);
+          fill(0);
+        } else {
+          stroke(2);
+          // fill(0);
+          fill(255);
+        }
+        var x = i * this.cellW;
+        var y = j * this.cellH;
+        rect(x,y,this.cellW,this.cellH);
       }
     }
   }
