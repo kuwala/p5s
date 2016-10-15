@@ -11,10 +11,10 @@ function Snake() {
     this.gotPoint = 0;
     // this.cells.clear();
     this.cells = []
-    this.len = 4;
+    this.len = 15;
     // set up cells pointing down
     for (var i = 0; i < this.len; i++) {
-      this.cells[i] = {x:10,y:10-i};
+      this.cells[i] = {x:30,y:30-i};
     }
     // 0 stopped, 1 top, 2 left, 3 down, 4 right
     this.dir = 3;

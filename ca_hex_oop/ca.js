@@ -13,7 +13,7 @@ function CA_Life() {
     var column = new Array(this.rows); // y
     // init cells as random dots
     for (var j = 0; j < column.length; j++) {
-      var state = Math.floor(random(1));
+      var state = Math.floor(random(2));
 
       var x = i * this.cellW;
       var y = j * this.cellH;
