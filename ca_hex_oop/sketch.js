@@ -2,6 +2,8 @@ function setup() {
   cnvs = createCanvas(1000, 1000);
   cnvs.parent("p5canvas");
   ca = new CA_Life();
+  grid = new HexGrid(100, 100, 10, 6, 40);
+  grid.initGrid();
   frameRate(10);
 }
 
@@ -27,7 +29,11 @@ function draw() {
   //   fill(255,0,0);
   //   drawHexagon(x + i*size*1.5, y, size);
   // }
-  drawHexagonGrid(100,100,8,10,60);
+  // drawHexagonGrid(100,100,8,10,60);
+  // drawHexagonGrid(100,100,2,3,60);
+  grid.drawHexGrid2();
+  // grid.drawHexagon(100,100,30,color(255,0,0));
+  drawHexagon(30,30,30);
 }
 function drawHexagonGrid(startX, startY, cols, rows, cellSize) {
   // loop draw row
@@ -36,8 +42,8 @@ function drawHexagonGrid(startX, startY, cols, rows, cellSize) {
     // if row is even set offset
     var xOffSet = 0; var yOffSet = 0;
     if (i % 2 == 1) {
-      console.log("offsetting");
-      console.log("i"+ i);
+      // console.log("offsetting");
+      // console.log("i"+ i);
       xOffSet = cellSize * 0.75;
       fill(255,0,0);
     } else {
@@ -50,6 +56,7 @@ function drawHexagonGrid(startX, startY, cols, rows, cellSize) {
     var y = startY + yOffSet;
     for (var j = 0; j < cols; j++) {
       drawHexagon(x + j * cellSize*1.5 , y + i * cellSize * 0.5, cellSize);
+
     }
   }
 }
