@@ -5,7 +5,7 @@ function CA() {
   this.cells = new Array(this.cols);
   this.generation = 0;
   this.ruleset = [0,1,1,1,1,0,0,0];
-  this.ruleset = [1,0,0,1,0,1,1,0];
+  // this.ruleset = [1,0,0,1,0,1,1,0];
   // cool rules: 150, 90, 165, 133, 110
 
   // Keep a history of active rows

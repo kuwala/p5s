@@ -1,0 +1,9 @@
+div.center {
+  width: 900px;
+  margin-left: auto;
+  display: block;
+  margin-right: auto;
+}
+body {
+  background-color: #000;
+}
